@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-po
+  namespace: demo
+  labels:
+    app: hello
+    tier: server
+spec:
+  containers:
+    - name: hello-co
+      image: nginxdemos/hello
+      ports:
+        - containerPort: 80

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: adminer-ing
+  namespace: demo
+spec:
+  tls:
+    - hosts:
+        - adminer.example.com
+      secretName: example.com
+  rules:
+    - host: adminer.example.com
+      http:
+        paths:
+          - backend:
+              serviceName: adminer-svc
+              servicePort: 80

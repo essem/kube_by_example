@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer-deploy
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: adminer
+  template:
+    metadata:
+      labels:
+        app: adminer
+    spec:
+      containers:
+        - image: adminer
+          name: adminer-co
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer-svc
+  namespace: demo
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: adminer
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: adminer-ing
+  namespace: demo
+spec:
+  rules:
+    - host: adminer.example.com
+      http:
+        paths:
+          - backend:
+              serviceName: adminer-svc
+              servicePort: 80

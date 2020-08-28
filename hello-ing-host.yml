@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-ing
+  namespace: demo
+spec:
+  rules:
+    - host: hello.example.com
+      http:
+        paths:
+          - backend:
+              serviceName: hello-svc
+              servicePort: 80

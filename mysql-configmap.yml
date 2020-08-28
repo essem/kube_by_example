@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-cm
+  namespace: demo
+data:
+  local.cnf: |
+    [mysqld]
+    max_allowed_packet=8M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deploy
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: mysql:5.7
+          name: mysql-co
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mysql/conf.d/local.cnf
+              subPath: local.cnf
+      volumes:
+        - name: config
+          configMap:
+            name: mysql-cm
